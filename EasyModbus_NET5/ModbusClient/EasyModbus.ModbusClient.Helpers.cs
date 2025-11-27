@@ -101,6 +101,7 @@ namespace EasyModbus
                                     highRegisterBytes[0],
                                     highRegisterBytes[1]
                                 };
+
             return BitConverter.ToSingle(floatBytes, 0);
         }
 
@@ -392,7 +393,6 @@ namespace EasyModbus
             };
             byte[] lowRegisterBytes =
             {
-
                 longBytes[0],
                 longBytes[1],
                 0,
@@ -457,7 +457,6 @@ namespace EasyModbus
             };
             byte[] lowRegisterBytes =
             {
-
                 doubleBytes[0],
                 doubleBytes[1],
                 0,

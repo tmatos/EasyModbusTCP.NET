@@ -69,6 +69,7 @@ namespace EasyModbusAdvancedClient
             }
 
             connectionPropertiesList.Add(connectionProperties);
+
             if (connectionPropertiesListChanged != null)
                 connectionPropertiesListChanged(this);
         }
@@ -76,6 +77,7 @@ namespace EasyModbusAdvancedClient
         public void RemoveConnection(int connectionNumber)
         {
             connectionPropertiesList.RemoveAt(connectionNumber);
+
             if (connectionPropertiesListChanged != null)
                 connectionPropertiesListChanged(this);
         }
@@ -83,12 +85,15 @@ namespace EasyModbusAdvancedClient
         public void EditConnection(ConnectionProperties connectionProperty, int connectionNumber)
         {
             connectionPropertiesList[connectionNumber] = connectionProperty;
+
             if (connectionPropertiesListChanged != null)
                 connectionPropertiesListChanged(this);
+
             foreach (ConnectionProperties connectionPropertyListEntry in connectionPropertiesList)
             {
                 if (connectionPropertyListEntry.ConnectionName == connectionProperty.ConnectionName)
                     throw new Exception("Duplicate connection Name detcted");
+
                 return;
             }
         }
@@ -99,6 +104,7 @@ namespace EasyModbusAdvancedClient
             functionProperty.Connection = connectionPropertiesList[connectionNumber];
             // add to list
             connectionPropertiesList[connectionNumber].FunctionPropertiesList.Add(functionProperty);
+
             if (connectionPropertiesListChanged != null)
                 connectionPropertiesListChanged(this);
         }
@@ -106,6 +112,7 @@ namespace EasyModbusAdvancedClient
         public void RemoveFunctionProperty(int connectionNumber, int functionNumber)
         {
             connectionPropertiesList[connectionNumber].FunctionPropertiesList.RemoveAt(functionNumber);
+
             if (connectionPropertiesListChanged != null)
                 connectionPropertiesListChanged(this);
         }
@@ -113,16 +120,18 @@ namespace EasyModbusAdvancedClient
         public void EditFunctionProperty(FunctionProperties functionProperty, int connectionNumber, int functionNumber)
         {
             connectionPropertiesList[connectionNumber].FunctionPropertiesList[functionNumber] = functionProperty;
+
             if (connectionPropertiesListChanged != null)
                 connectionPropertiesListChanged(this);
         }
 
         public delegate void ValuesChanged(object sender);
         public event ValuesChanged valuesChanged;
+
         public void GetValues(ConnectionProperties connectionProperties, int functionPropertyID)
         {
+            modbusClient = connectionProperties.modbusClient;
 
-            modbusClient = connectionProperties.modbusClient;          
             if (!modbusClient.Connected)
             {
                 modbusClient.IPAddress = connectionProperties.ModbusTCPAddress;
@@ -146,21 +155,24 @@ namespace EasyModbusAdvancedClient
                     break;
                 default: break;
             }
+
             if (valuesChanged != null)
                 valuesChanged(this);
         }
 
         public void GetValues(ConnectionProperties connectionProperties)
         {
-
             modbusClient = connectionProperties.modbusClient;
+
             if (!modbusClient.Connected)
             {
                 modbusClient.IPAddress = connectionProperties.ModbusTCPAddress;
                 modbusClient.Port = connectionProperties.Port;
                 modbusClient.Connect();
             }
+
             foreach (FunctionProperties functionProperty in connectionProperties.FunctionPropertiesList)
+            {
                 switch (functionProperty.FunctionCodeRead)
                 {
                     case FunctionCodeRd.ReadCoils:
@@ -177,6 +189,8 @@ namespace EasyModbusAdvancedClient
                         break;
                     default: break;
                 }
+            }
+
             if (valuesChanged != null)
                 valuesChanged(this);
         }
@@ -184,11 +198,12 @@ namespace EasyModbusAdvancedClient
         public delegate void ConnectionPropertiesListChanged(object sender);
         public event ConnectionPropertiesListChanged connectionPropertiesListChanged;
 
-
         public static string getAddress(FunctionCodeRd functionCode, int startingAddress, int quantity, int elementCount)
         {
             string returnValue = null;
+
             if ((startingAddress + elementCount) <= (startingAddress + quantity))
+            {
                 switch (functionCode)
                 {
                     case FunctionCodeRd.ReadCoils:
@@ -205,12 +220,15 @@ namespace EasyModbusAdvancedClient
                         break;
                     default: break;
                 }
+            }
+
             return returnValue;
         }
 
         public static int[] StrToValues(FunctionProperties functionProperties, string str)
         {
             int[] values = { };
+
             switch (functionProperties.FunctionCodeWrite)
             {
                 case FunctionCodeWr.WriteHoldingRegisters:
@@ -220,11 +238,10 @@ namespace EasyModbusAdvancedClient
                         // add 
                         int[] x = { value };
                         return x;
-
                     }
-
                     break;
             }
+
             return values;
         }
 
@@ -235,9 +252,7 @@ namespace EasyModbusAdvancedClient
                 foreach (FunctionProperties functionProperty in connection.FunctionPropertiesList)
                 {
                     if (functionProperty.DataGridRow == gridRow)
-                    {
                         return functionProperty;
-                    }
                 }
             }
 
@@ -257,9 +272,8 @@ namespace EasyModbusAdvancedClient
             switch(prop.FunctionCodeWrite)
             {
                 case FunctionCodeWr.WriteHoldingRegisters:
-                                            prop.Connection.modbusClient.WriteMultipleRegisters(startingAddress, values);
-                                            break;
-
+                    prop.Connection.modbusClient.WriteMultipleRegisters(startingAddress, values);
+                    break;
             }
         }
 
@@ -290,6 +304,7 @@ namespace EasyModbusAdvancedClient
                 xmlNodeConnectionProp = xmlDocument.CreateElement("cycleTime");
                 xmlNodeConnectionProp.InnerText = this.connectionPropertiesList[i].CycleTime.ToString();
                 xmlNodeConnection.AppendChild(xmlNodeConnectionProp);
+
                 for (int j = 0; j < this.connectionPropertiesList[i].FunctionPropertiesList.Count; j++)
                 {
                     xmlNodeFunctionCodes = xmlDocument.CreateElement("functionCodes");
@@ -307,8 +322,10 @@ namespace EasyModbusAdvancedClient
                     xmlNodeFunctionCodes.AppendChild(xmlNodeFunctionCodesProp);
                     xmlNodeConnection.AppendChild(xmlNodeFunctionCodes);
                 }
+
                 xmlRoot.AppendChild(xmlNodeConnection);
                 xmlNodeDataGrid = xmlDocument.CreateElement("dataGridView");
+
                 for (int j = 0; j < dataGridView.Rows.Count; j++)
                 {
                     if (dataGridView[0, j].Value != null & dataGridView[1, j].Value != null & dataGridView[3, j].Value != null)
@@ -324,10 +341,12 @@ namespace EasyModbusAdvancedClient
                         xmlNodeDataGridLines.AppendChild(xmlNodeDataGridLinesProp);
 
                         xmlNodeDataGridLinesProp = xmlDocument.CreateElement("columnTag");
+
                         if (dataGridView[2, j].Value != null)
                             xmlNodeDataGridLinesProp.InnerText = dataGridView[2, j].Value.ToString();
                         else
                             xmlNodeDataGridLinesProp.InnerText = "n.a.";
+
                         xmlNodeDataGridLines.AppendChild(xmlNodeDataGridLinesProp);
 
                         xmlNodeDataGridLinesProp = xmlDocument.CreateElement("columnDataType");
@@ -337,8 +356,8 @@ namespace EasyModbusAdvancedClient
                         xmlNodeDataGrid.AppendChild(xmlNodeDataGridLines);
                     }
                 }
-                xmlRoot.AppendChild(xmlNodeDataGrid);
 
+                xmlRoot.AppendChild(xmlNodeDataGrid);
                 xmlDocument.AppendChild(xmlRoot);
                 xmlDocument.Save("textWriter.xml");
             }
@@ -346,6 +365,7 @@ namespace EasyModbusAdvancedClient
 
         public delegate void DataGridViewChanged(object sender);
         public event DataGridViewChanged dataGridViewChanged;
+
         public void ReadXML(DataGridView dataGridView)
         {
             XmlNodeList xmlNodeList, xmlNodeList2;
@@ -368,6 +388,7 @@ namespace EasyModbusAdvancedClient
                 connectionProperty.CyclicFlag = bool.Parse(xmlNode["cyclicFlag"].InnerText);
                 connectionProperty.CycleTime = Int32.Parse(xmlNode["cycleTime"].InnerText);
                 xmlNode3 = xmlNode["functionCodes"];
+
                 while (xmlNode3 != null)
                 {
                     xmlNodeList2 = xmlNode3.ChildNodes;
@@ -376,6 +397,7 @@ namespace EasyModbusAdvancedClient
                     foreach (XmlNode xmlNode2 in xmlNodeList2)
                     {
                         if (xmlNode2.Name == "functionCodeRead")
+                        {
                             switch (xmlNode2.InnerText)
                             {
                                 case "ReadCoils":
@@ -391,6 +413,7 @@ namespace EasyModbusAdvancedClient
                                     functionProperty.FunctionCodeRead = FunctionCodeRd.ReadInputRegisters;
                                     break;
                             }
+                        }
                         if (xmlNode2.Name == "functionCodeWrite")
                         {
                             functionProperty.FunctionCodeWrite = FunctionCodeWr.WriteNone;
@@ -421,6 +444,7 @@ namespace EasyModbusAdvancedClient
 
                     xmlNode3 = xmlNode3.NextSibling;
                 }
+
                 slotId++;
                 //this.connectionPropertiesList.Add(connectionProperty);
             }
@@ -435,8 +459,10 @@ namespace EasyModbusAdvancedClient
             foreach (XmlNode xmlNode in xmlNodeList)
             {
                 dataGridView.Rows.Add();
+
                 if  (xmlNode["columnConnection"] != null)
                     dataGridView[0, dataGridView.Rows.Count - 1].Value = xmlNode["columnConnection"].InnerText;
+
                 dataGridView.ClearSelection();
                 dataGridView.CurrentCell = null;
                 
@@ -456,14 +482,14 @@ namespace EasyModbusAdvancedClient
             dataGridView.AllowUserToAddRows = true;
         }
     }
-	
-	public enum FunctionCodeRd : int
-	{
-		ReadCoils = 1,
-		ReadDiscreteInputs = 2,
-		ReadHoldingRegisters = 3,
-		ReadInputRegisters = 4,
-	};
+    
+    public enum FunctionCodeRd : int
+    {
+        ReadCoils = 1,
+        ReadDiscreteInputs = 2,
+        ReadHoldingRegisters = 3,
+        ReadInputRegisters = 4,
+    };
 
     public enum FunctionCodeWr : int
     {
@@ -475,17 +501,17 @@ namespace EasyModbusAdvancedClient
     };
 
     public class FunctionProperties
-	{
-		FunctionCodeRd functionCodeRd = FunctionCodeRd.ReadCoils;
+    {
+        FunctionCodeRd functionCodeRd = FunctionCodeRd.ReadCoils;
         [Browsable(true)]                       
-   		[Category("Function code properties")] 
-    	[Description("Function Code Read")]           
-   		[DisplayName("Function Code Read")]     
-		public FunctionCodeRd FunctionCodeRead
-		{
-			get {return functionCodeRd; }
-			set { functionCodeRd = value;}
-		}
+        [Category("Function code properties")] 
+        [Description("Function Code Read")]           
+        [DisplayName("Function Code Read")]
+        public FunctionCodeRd FunctionCodeRead
+        {
+            get { return functionCodeRd; }
+            set { functionCodeRd = value; }
+        }
 
         FunctionCodeWr functionCodeWr = FunctionCodeWr.WriteNone;
         [Browsable(true)]
@@ -499,26 +525,26 @@ namespace EasyModbusAdvancedClient
         }
 
         int startingAdress = 0;
-		[Browsable(true)]                       
-   		[Category("Function code properties")] 
-    	[Description("Starting Address")]           
-   		[DisplayName("Starting Address")]  
-		public int StartingAdress
-		{
-			get {return startingAdress;}
-			set {startingAdress = value;}
-		}
+        [Browsable(true)]                       
+        [Category("Function code properties")] 
+        [Description("Starting Address")]           
+        [DisplayName("Starting Address")]  
+        public int StartingAdress
+        {
+            get {return startingAdress;}
+            set {startingAdress = value;}
+        }
 
-		int quantity = 1;
-		[Browsable(true)]                       
-   		[Category("Function code properties")] 
-    	[Description("Quantity")]           
-   		[DisplayName("Quantity")]    
-		public int Quantity
-		{
-			get {return quantity;}
-			set {quantity = value;}
-		}
+        int quantity = 1;
+        [Browsable(true)]                       
+        [Category("Function code properties")] 
+        [Description("Quantity")]           
+        [DisplayName("Quantity")]    
+        public int Quantity
+        {
+            get {return quantity;}
+            set {quantity = value;}
+        }
 
         int DataGridRowIdx = -1;
         [Browsable(false)]
@@ -543,5 +569,5 @@ namespace EasyModbusAdvancedClient
         }
 
         public object values;
-}
+    }
 }

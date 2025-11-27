@@ -280,10 +280,7 @@ namespace EasyModbus
 
             public NetworkStream NetworkStream
             {
-                get
-                {
-                    return tcpClient.GetStream();
-                }
+                get { return tcpClient.GetStream(); }
             }
         }
     }
@@ -1755,10 +1752,12 @@ namespace EasyModbus
             if (sendData.exceptionCode == 0)
             {
                 lock (lockHoldingRegisters)
+                {
                     for (int i = 0; i < receiveData.quantity; i++)
                     {
                         holdingRegisters[receiveData.startingAdress + i + 1] = unchecked((short)receiveData.receiveRegisterValues[i]);
                     }
+                }
             }
 
             if (sendData.exceptionCode > 0)
@@ -2080,90 +2079,48 @@ namespace EasyModbus
 
         public int NumberOfConnections
         {
-            get
-            {
-                return numberOfConnections;
-            }
+            get { return numberOfConnections; }
         }
 
         public ModbusProtocol[] ModbusLogData
         {
-            get
-            {
-                return modbusLogData;
-            }
+            get { return modbusLogData; }
         }
 
         public int Port
         {
-            get
-            {
-                return port;
-            }
-            set
-            {
-                port = value;
-            }
+            get { return port; }
+            set { port = value; }
         }
 
         public bool UDPFlag
         {
-            get
-            {
-                return udpFlag;
-            }
-            set
-            {
-                udpFlag = value;
-            }
+            get { return udpFlag; }
+            set { udpFlag = value; }
         }
         
         public bool SerialFlag
         {
-            get
-            {
-                return serialFlag;
-            }
-            set
-            {
-                serialFlag = value;
-            }
+            get { return serialFlag; }
+            set { serialFlag = value; }
         }
 
         public int Baudrate
         {
-            get
-            {
-                return baudrate;
-            }
-            set
-            {
-                baudrate = value;
-            }
+            get { return baudrate; }
+            set { baudrate = value; }
         }
 
         public System.IO.Ports.Parity Parity
         {
-            get
-            {
-                return parity;
-            }
-            set
-            {
-                parity = value;
-            }
+            get { return parity; }
+            set { parity = value; }
         }
 
         public System.IO.Ports.StopBits StopBits
         {
-            get
-            {
-                return stopBits;
-            }
-            set
-            {
-                stopBits = value;
-            }
+            get { return stopBits; }
+            set { stopBits = value; }
         }
 
         public string SerialPort
@@ -2184,14 +2141,8 @@ namespace EasyModbus
 
         public byte UnitIdentifier
         {
-            get
-            {
-                return unitIdentifier;
-            }
-            set
-            {
-                unitIdentifier = value;
-            }
+            get { return unitIdentifier; }
+            set { unitIdentifier = value; }
         }
 
         /// <summary>

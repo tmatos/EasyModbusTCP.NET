@@ -91,10 +91,7 @@ namespace EasyModbus
             if (debug)
             {
                 StoreLogData.Instance.Store("EasyModbus library initialized for Modbus-TCP, IPAddress: "
-                                            + ipAddress
-                                            + ", Port: "
-                                            + port,
-                                            System.DateTime.Now);
+                                            + ipAddress + ", Port: " + port, System.DateTime.Now);
             }
 
 #if (!COMMERCIAL)
@@ -114,11 +111,7 @@ namespace EasyModbus
         public ModbusClient(string serialPort)
         {
             if (debug)
-            {
-                StoreLogData.Instance.Store("EasyModbus library initialized for Modbus-RTU, COM-Port: "
-                                            + serialPort,
-                                            System.DateTime.Now);
-            }
+                StoreLogData.Instance.Store("EasyModbus library initialized for Modbus-RTU, COM-Port: " + serialPort, System.DateTime.Now);
 
 #if (!COMMERCIAL)
             Console.WriteLine("EasyModbus Client Library Version: " + Assembly.GetExecutingAssembly().GetName().Version.ToString());
@@ -179,7 +172,6 @@ namespace EasyModbus
                     }
                     catch
                     {
-
                     }
 
                 return;
@@ -188,13 +180,7 @@ namespace EasyModbus
             if (!udpFlag)
             {
                 if (debug)
-                {
-                    StoreLogData.Instance.Store("Open TCP-Socket, IP-Address: "
-                                                + ipAddress
-                                                + ", Port: "
-                                                + port,
-                                                System.DateTime.Now);
-                }
+                    StoreLogData.Instance.Store("Open TCP-Socket, IP-Address: " + ipAddress + ", Port: " + port, System.DateTime.Now);
 
                 tcpClient = new TcpClient();
                 var result = tcpClient.BeginConnect(ipAddress, port, null, null);
@@ -223,7 +209,6 @@ namespace EasyModbus
                 }
                 catch
                 {
-
                 }
         }
         
@@ -236,10 +221,7 @@ namespace EasyModbus
             {
                 if (debug)
                 {
-                    StoreLogData.Instance.Store("Open TCP-Socket, IP-Address: "
-                                                + ipAddress
-                                                + ", Port: "
-                                                + port,
+                    StoreLogData.Instance.Store("Open TCP-Socket, IP-Address: " + ipAddress + ", Port: " + port,
                                                 System.DateTime.Now);
                 }
 
@@ -827,6 +809,7 @@ namespace EasyModbus
             //sp.DiscardInBuffer();
             
             //if (DetectValidModbusFrame(readBuffer, (actualPositionToRead < readBuffer.Length) ? actualPositionToRead : readBuffer.Length) | bytesToRead <= actualPositionToRead)
+            {
                 if (actualPositionToRead >= bytesToRead)
                 {
                     dataReceived = true;
@@ -835,6 +818,7 @@ namespace EasyModbus
                     if (debug)
                         StoreLogData.Instance.Store("Received Serial-Data: " + BitConverter.ToString(readBuffer), System.DateTime.Now);
                 }
+            }
 
             //dateTimeLastRead = DateTime.Now;
         } */       
@@ -863,7 +847,8 @@ namespace EasyModbus
             int actualPositionToRead = 0;
             DateTime dateTimeLastRead = DateTime.Now;
 
-            do {
+            do
+            {
                 try
                 {
                     dateTimeLastRead = DateTime.Now;
@@ -886,7 +871,6 @@ namespace EasyModbus
                 }
                 catch (Exception)
                 {
-                    
                 }
 
                 if (bytesToRead <= actualPositionToRead)
@@ -895,7 +879,6 @@ namespace EasyModbus
                 if (DetectValidModbusFrame(readBuffer, (actualPositionToRead < readBuffer.Length) ? actualPositionToRead : readBuffer.Length) | bytesToRead <= actualPositionToRead)
                     break;
             }
-
             while ((DateTime.Now.Ticks - dateTimeLastRead.Ticks) < ticksWait);
             
             // 10.000 Ticks in 1 ms
@@ -1336,22 +1319,26 @@ namespace EasyModbus
 
             if (data[7] == 0x81 & data[8] == 0x01)
             {
-                if (debug) StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.FunctionCodeNotSupportedException("Function code not supported by master");
             }
             if (data[7] == 0x81 & data[8] == 0x02)
             {
-                if (debug) StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.StartingAddressInvalidException("Starting address invalid or starting address + quantity invalid");
             }
             if (data[7] == 0x81 & data[8] == 0x03)
             {
-                if (debug) StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.QuantityInvalidException("quantity invalid");
             }
             if (data[7] == 0x81 & data[8] == 0x04)
             {
-                if (debug) StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.ModbusException("error reading");
             }
 
@@ -1404,7 +1391,6 @@ namespace EasyModbus
             return (response);
         }
 
-
         /// <summary>
         /// Read Holding Registers from Master device (FC3).
         /// </summary>
@@ -1416,10 +1402,7 @@ namespace EasyModbus
             if (debug)
             {
                 StoreLogData.Instance.Store("FC3 (Read Holding Registers from Master device), StartingAddress: "
-                                            + startingAddress
-                                            + ", Quantity: "
-                                            + quantity,
-                                            System.DateTime.Now);
+                                            + startingAddress + ", Quantity: " + quantity, System.DateTime.Now);
             }
 
             transactionIdentifierInternal++;
@@ -1571,22 +1554,26 @@ namespace EasyModbus
 
             if (data[7] == 0x83 & data[8] == 0x01)
             {
-                if (debug) StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.FunctionCodeNotSupportedException("Function code not supported by master");
             }
             if (data[7] == 0x83 & data[8] == 0x02)
             {
-                if (debug) StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.StartingAddressInvalidException("Starting address invalid or starting address + quantity invalid");
             }
             if (data[7] == 0x83 & data[8] == 0x03)
             {
-                if (debug) StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.QuantityInvalidException("quantity invalid");
             }
             if (data[7] == 0x83 & data[8] == 0x04)
             {
-                if (debug) StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.ModbusException("error reading");
             }
 
@@ -1656,9 +1643,7 @@ namespace EasyModbus
             if (debug)
             {
                 StoreLogData.Instance.Store("FC4 (Read Input Registers from Master device), StartingAddress: "
-                                            + startingAddress
-                                            + ", Quantity: "
-                                            + quantity,System.DateTime.Now);
+                                            + startingAddress + ", Quantity: " + quantity,System.DateTime.Now);
             }                                            
 
             transactionIdentifierInternal++;
@@ -1793,7 +1778,8 @@ namespace EasyModbus
                     {
                         receiveData = new byte[NumberOfBytes];
                         Array.Copy(data, 0, receiveData, 0, NumberOfBytes);
-                        if (debug)StoreLogData.Instance.Store("Receive ModbusTCP-Data: " + BitConverter.ToString(receiveData), System.DateTime.Now);
+                        if (debug)
+                            StoreLogData.Instance.Store("Receive ModbusTCP-Data: " + BitConverter.ToString(receiveData), System.DateTime.Now);
                         ReceiveDataChanged(this);
                     }
                 }
@@ -1801,22 +1787,26 @@ namespace EasyModbus
 
             if (data[7] == 0x84 & data[8] == 0x01)
             {
-                if (debug) StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.FunctionCodeNotSupportedException("Function code not supported by master");
             }
             if (data[7] == 0x84 & data[8] == 0x02)
             {
-                if (debug) StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.StartingAddressInvalidException("Starting address invalid or starting address + quantity invalid");
             }
             if (data[7] == 0x84 & data[8] == 0x03)
             {
-                if (debug) StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.QuantityInvalidException("quantity invalid");
             }
             if (data[7] == 0x84 & data[8] == 0x04)
             {
-                if (debug) StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.ModbusException("error reading");
             }
 
@@ -2027,22 +2017,26 @@ namespace EasyModbus
 
             if (data[7] == 0x85 & data[8] == 0x01)
             {
-                if (debug) StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.FunctionCodeNotSupportedException("Function code not supported by master");
             }
             if (data[7] == 0x85 & data[8] == 0x02)
             {
-                if (debug) StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.StartingAddressInvalidException("Starting address invalid or starting address + quantity invalid");
             }
             if (data[7] == 0x85 & data[8] == 0x03)
             {
-                if (debug) StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.QuantityInvalidException("quantity invalid");
             }
             if (data[7] == 0x85 & data[8] == 0x04)
             {
-                if (debug) StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.ModbusException("error reading");
             }
 
@@ -2235,22 +2229,26 @@ namespace EasyModbus
 
             if (data[7] == 0x86 & data[8] == 0x01)
             {
-                if (debug) StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.FunctionCodeNotSupportedException("Function code not supported by master");
             }
             if (data[7] == 0x86 & data[8] == 0x02)
             {
-                if (debug) StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.StartingAddressInvalidException("Starting address invalid or starting address + quantity invalid");
             }
             if (data[7] == 0x86 & data[8] == 0x03)
             {
-                if (debug) StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.QuantityInvalidException("quantity invalid");
             }
             if (data[7] == 0x86 & data[8] == 0x04)
             {
-                if (debug) StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.ModbusException("error reading");
             }
 
@@ -2463,22 +2461,26 @@ namespace EasyModbus
 
             if (data[7] == 0x8F & data[8] == 0x01)
             {
-                if (debug) StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.FunctionCodeNotSupportedException("Function code not supported by master");
             }
             if (data[7] == 0x8F & data[8] == 0x02)
             {
-                if (debug) StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.StartingAddressInvalidException("Starting address invalid or starting address + quantity invalid");
             }
             if (data[7] == 0x8F & data[8] == 0x03)
             {
-                if (debug) StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.QuantityInvalidException("quantity invalid");
             }
             if (data[7] == 0x8F & data[8] == 0x04)
             {
-                if (debug) StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.ModbusException("error reading");
             }
 
@@ -2537,10 +2539,7 @@ namespace EasyModbus
             if (debug)
             {
                 StoreLogData.Instance.Store("FC16 (Write multiple Registers to Server device), StartingAddress: "
-                                            + startingAddress
-                                            + ", Values: "
-                                            + debugString,
-                                            System.DateTime.Now);
+                                            + startingAddress + ", Values: " + debugString, System.DateTime.Now);
             }
 
             transactionIdentifierInternal++;
@@ -2688,22 +2687,26 @@ namespace EasyModbus
 
             if (data[7] == 0x90 & data[8] == 0x01)
             {
-                if (debug) StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("FunctionCodeNotSupportedException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.FunctionCodeNotSupportedException("Function code not supported by master");
             }
             if (data[7] == 0x90 & data[8] == 0x02)
             {
-                if (debug) StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("StartingAddressInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.StartingAddressInvalidException("Starting address invalid or starting address + quantity invalid");
             }
             if (data[7] == 0x90 & data[8] == 0x03)
             {
-                if (debug) StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("QuantityInvalidException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.QuantityInvalidException("quantity invalid");
             }
             if (data[7] == 0x90 & data[8] == 0x04)
             {
-                if (debug) StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
+                if (debug)
+                    StoreLogData.Instance.Store("ModbusException Throwed", System.DateTime.Now);
                 throw new EasyModbus.Exceptions.ModbusException("error reading");
             }
 
@@ -2765,14 +2768,8 @@ namespace EasyModbus
             if (debug)
             {
                 StoreLogData.Instance.Store("FC23 (Read and Write multiple Registers to Server device), StartingAddress Read: "
-                                            + startingAddressRead
-                                            + ", Quantity Read: "
-                                            + quantityRead
-                                            + ", startingAddressWrite: "
-                                            + startingAddressWrite
-                                            + ", Values: "
-                                            + debugString,
-                                            System.DateTime.Now);
+                                            + startingAddressRead + ", Quantity Read: " + quantityRead + ", startingAddressWrite: "
+                                            + startingAddressWrite + ", Values: " + debugString, System.DateTime.Now);
             }
 
             transactionIdentifierInternal++;
@@ -3086,6 +3083,141 @@ namespace EasyModbus
         /// </summary>
         public string IPAddress
         {
+            get { return ipAddress; }
+            set { ipAddress = value; }
+        }
+
+        /// <summary>
+        /// Gets or Sets the Port were the Modbus-TCP Server is reachable (Standard is 502).
+        /// </summary>
+        public int Port
+        {
+            get { return port; }
+            set { port = value; }
+        }
+
+        /// <summary>
+        /// Gets or Sets the UDP-Flag to activate Modbus UDP.
+        /// </summary>
+        public bool UDPFlag
+        {
+            get { return udpFlag; }
+            set { udpFlag = value; }
+        }
+
+        /// <summary>
+        /// Gets or Sets the Unit identifier in case of serial connection (Default = 0)
+        /// </summary>
+        public byte UnitIdentifier
+        {
+            get { return unitIdentifier; }
+            set { unitIdentifier = value; }
+        }
+
+
+        /// <summary>
+        /// Gets or Sets the Baudrate for serial connection (Default = 9600)
+        /// </summary>
+        public int Baudrate
+        {
+            get { return baudRate; }
+            set { baudRate = value; }
+        }
+
+        /// <summary>
+        /// Gets or Sets the of Parity in case of serial connection
+        /// </summary>
+        public Parity Parity
+        {
             get
             {
-             
+                if (serialport != null)
+                    return parity;
+                else
+                    return Parity.Even;
+            }
+            set
+            {
+                if (serialport != null)
+                    parity = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets or Sets the number of stopbits in case of serial connection
+        /// </summary>
+        public StopBits StopBits
+        {
+            get
+            {
+                if (serialport != null)
+                    return stopBits;
+                else
+                    return StopBits.One;
+            }
+            set
+            {
+                if (serialport != null)
+                    stopBits = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the connection Timeout in case of ModbusTCP connection
+        /// </summary>
+        public int ConnectionTimeout
+        {
+            get { return connectTimeout; }
+            set { connectTimeout = value; }
+        }
+
+        /// <summary>
+        /// Gets or Sets the serial Port
+        /// </summary>
+        public string SerialPort
+        {
+            get
+            {
+                return serialport.PortName;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    serialport = null;
+                    return;
+                }
+                if (serialport != null)
+                    serialport.Close();
+                this.serialport = new SerialPort();
+                this.serialport.PortName = value;               
+                serialport.BaudRate = baudRate;
+                serialport.Parity = parity;
+                serialport.StopBits = stopBits;
+                serialport.WriteTimeout = 10000;
+                serialport.ReadTimeout = connectTimeout;
+                serialport.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the Filename for the LogFile
+        /// </summary>
+        public string LogFileFilename
+        {
+            get
+            {
+                return StoreLogData.Instance.Filename;
+            }
+            set
+            {
+                StoreLogData.Instance.Filename = value;
+                if (StoreLogData.Instance.Filename != null)
+                    debug = true;
+                else
+                    debug = false;
+            }
+        }
+    }
+}

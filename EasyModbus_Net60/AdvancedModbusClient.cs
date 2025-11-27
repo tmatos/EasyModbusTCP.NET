@@ -7,7 +7,15 @@ namespace EasyModbus
     public partial class ModbusClient
     {
         /*
-        public enum DataType { Short = 0, UShort = 1, Long = 2, ULong = 3, Float = 4, Double = 5 };
+        public enum DataType
+        {
+            Short = 0,
+            UShort = 1,
+            Long = 2,
+            ULong = 3,
+            Float = 4,
+            Double = 5
+        };
 
         public object[] ReadHoldingRegisters(int startingAddress, int quantity, DataType dataType, RegisterOrder registerOrder)
         {

@@ -6,50 +6,51 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+
 namespace EasyModbusClientExample
 {
-	partial class MainForm
-	{
-		/// <summary>
-		/// Designer variable used to keep track of non-visual components.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
-		private System.Windows.Forms.TextBox txtIpAddressInput;
-		private System.Windows.Forms.Label txtIpAddress;
-		private System.Windows.Forms.Label txtPort;
+    partial class MainForm
+    {
+        /// <summary>
+        /// Designer variable used to keep track of non-visual components.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+        private System.Windows.Forms.TextBox txtIpAddressInput;
+        private System.Windows.Forms.Label txtIpAddress;
+        private System.Windows.Forms.Label txtPort;
         private System.Windows.Forms.TextBox txtPortInput;
-		private System.Windows.Forms.Button btnReadCoils;
-		private System.Windows.Forms.Button btnReadDiscreteInputs;
-		private System.Windows.Forms.Button btnReadHoldingRegisters;
-		private System.Windows.Forms.Button btnReadInputRegisters;
-		private System.Windows.Forms.TextBox txtStartingAddressInput;
-		private System.Windows.Forms.Label txtStartingAddress;
-		private System.Windows.Forms.Label txtNumberOfValues;
-		private System.Windows.Forms.TextBox txtNumberOfValuesInput;
-		
-		/// <summary>
-		/// Disposes resources used by the form.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
+        private System.Windows.Forms.Button btnReadCoils;
+        private System.Windows.Forms.Button btnReadDiscreteInputs;
+        private System.Windows.Forms.Button btnReadHoldingRegisters;
+        private System.Windows.Forms.Button btnReadInputRegisters;
+        private System.Windows.Forms.TextBox txtStartingAddressInput;
+        private System.Windows.Forms.Label txtStartingAddress;
+        private System.Windows.Forms.Label txtNumberOfValues;
+        private System.Windows.Forms.TextBox txtNumberOfValuesInput;
+        
+        /// <summary>
+        /// Disposes resources used by the form.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-				if (components != null)
+                if (components != null)
                 {
-					components.Dispose();
-				}
-			}
-			base.Dispose(disposing);
-		}
-		
-		/// <summary>
-		/// This method is required for Windows Forms designer support.
-		/// Do not change the method contents inside the source code editor. The Forms designer might
-		/// not be able to load this method if it was changed manually.
-		/// </summary>
-		private void InitializeComponent()
-		{
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
+        
+        /// <summary>
+        /// This method is required for Windows Forms designer support.
+        /// Do not change the method contents inside the source code editor. The Forms designer might
+        /// not be able to load this method if it was changed manually.
+        /// </summary>
+        private void InitializeComponent()
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.txtIpAddressInput = new System.Windows.Forms.TextBox();
             this.txtIpAddress = new System.Windows.Forms.Label();
@@ -452,9 +453,9 @@ namespace EasyModbusClientExample
             // 
             this.cbbParity.FormattingEnabled = true;
             this.cbbParity.Items.AddRange(new object[] {
-            "Even",
-            "Odd",
-            "None"});
+                "Even",
+                "Odd",
+                "None"});
             this.cbbParity.Location = new System.Drawing.Point(97, 101);
             this.cbbParity.Name = "cbbParity";
             this.cbbParity.Size = new System.Drawing.Size(55, 21);
@@ -465,9 +466,9 @@ namespace EasyModbusClientExample
             // 
             this.cbbStopbits.FormattingEnabled = true;
             this.cbbStopbits.Items.AddRange(new object[] {
-            "1",
-            "1.5",
-            "2"});
+                "1",
+                "1.5",
+                "2"});
             this.cbbStopbits.Location = new System.Drawing.Point(158, 101);
             this.cbbStopbits.Name = "cbbStopbits";
             this.cbbStopbits.Size = new System.Drawing.Size(55, 21);
@@ -625,8 +626,7 @@ namespace EasyModbusClientExample
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
-		}
+        }
 
         private System.Windows.Forms.ListBox lsbAnswerFromServer;
         private System.Windows.Forms.PictureBox pictureBox1;

@@ -7,14 +7,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   
-
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0'">
     <PackageReference Include="System.IO.Ports" Version="5.0.0" />
   </ItemGroup>
-
-
-
-
 
 </Project>

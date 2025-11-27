@@ -13,8 +13,8 @@
     <releaseNotes>Update to version 5.6</releaseNotes>
     <copyright>Rossmann Engineering 2018-2020</copyright>
     <tags>Modbus TCP RTU EasyModbusTCP</tags>
-	<dependencies>
-	<group targetFramework=".NETFramework4.0" />
-	</dependencies>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0" />
+    </dependencies>
   </metadata>
 </package>

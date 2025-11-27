@@ -21,6 +21,7 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
 using System;
 using System.Runtime.Serialization;
 
@@ -31,13 +32,13 @@ namespace EasyModbus.Exceptions
 	/// </summary>
 	public class SerialPortNotOpenedException : ModbusException
 	{
-   		public SerialPortNotOpenedException()
+		public SerialPortNotOpenedException()
         	: base()
     	{
     	}
 
     	public SerialPortNotOpenedException(string message)
-      	  : base(message)
+			: base(message)
     	{
     	}
 
@@ -48,8 +49,8 @@ namespace EasyModbus.Exceptions
 
     	protected SerialPortNotOpenedException(SerializationInfo info, StreamingContext context)
         	: base(info, context)
-   	 	{
-   	 	}
+		{
+		}
 	}
 	
 	/// <summary>
@@ -63,7 +64,7 @@ namespace EasyModbus.Exceptions
     	}
 
     	public ConnectionException(string message)
-      	  : base(message)
+			: base(message)
     	{
     	}
 
@@ -74,8 +75,8 @@ namespace EasyModbus.Exceptions
 
     	protected ConnectionException(SerializationInfo info, StreamingContext context)
         	: base(info, context)
-   	 	{
-   	 	}
+		{
+		}
 	}
 	
 	/// <summary>
@@ -89,7 +90,7 @@ namespace EasyModbus.Exceptions
     	}
 
     	public FunctionCodeNotSupportedException(string message)
-      	  : base(message)
+			: base(message)
     	{
     	}
 
@@ -100,8 +101,8 @@ namespace EasyModbus.Exceptions
 
     	protected FunctionCodeNotSupportedException(SerializationInfo info, StreamingContext context)
         	: base(info, context)
-   	 	{
-   	 	}
+		{
+		}
 	}
 	
 	/// <summary>
@@ -115,7 +116,7 @@ namespace EasyModbus.Exceptions
     	}
 
     	public QuantityInvalidException(string message)
-      	  : base(message)
+			: base(message)
     	{
     	}
 
@@ -126,8 +127,8 @@ namespace EasyModbus.Exceptions
 
     	protected QuantityInvalidException(SerializationInfo info, StreamingContext context)
         	: base(info, context)
-   	 	{
-   	 	}
+		{
+		}
 	}
 	
 	/// <summary>
@@ -141,7 +142,7 @@ namespace EasyModbus.Exceptions
     	}
 
     	public StartingAddressInvalidException(string message)
-      	  : base(message)
+			: base(message)
     	{
     	}
 
@@ -152,8 +153,8 @@ namespace EasyModbus.Exceptions
 
     	protected StartingAddressInvalidException(SerializationInfo info, StreamingContext context)
         	: base(info, context)
-   	 	{
-   	 	}
+		{
+		}
 	}
 	
 	/// <summary>
@@ -161,13 +162,13 @@ namespace EasyModbus.Exceptions
 	/// </summary>
 	public class ModbusException : Exception
 	{
-   		public ModbusException()
+		public ModbusException()
         	: base()
     	{
     	}
 
     	public ModbusException(string message)
-      	  : base(message)
+			: base(message)
     	{
     	}
 
@@ -178,8 +179,8 @@ namespace EasyModbus.Exceptions
 
     	protected ModbusException(SerializationInfo info, StreamingContext context)
         	: base(info, context)
-   	 	{
-   	 	}
+		{
+		}
 	}
 	
 	/// <summary>
@@ -187,13 +188,13 @@ namespace EasyModbus.Exceptions
 	/// </summary>
 	public class CRCCheckFailedException : ModbusException
 	{
-   		public CRCCheckFailedException()
+		public CRCCheckFailedException()
         	: base()
     	{
     	}
 
     	public CRCCheckFailedException(string message)
-      	  : base(message)
+			: base(message)
     	{
     	}
 
@@ -204,8 +205,7 @@ namespace EasyModbus.Exceptions
 
     	protected CRCCheckFailedException(SerializationInfo info, StreamingContext context)
         	: base(info, context)
-   	 	{
-   	 	}
+		{
+		}
 	}
-	
 }

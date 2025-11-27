@@ -122,6 +122,7 @@ namespace EasyModbus
                     byte byteCount = (byte)((RegisterDataBool.Length % 8 != 0 ? RegisterDataBool.Length / 8 + 1 : (RegisterDataBool.Length / 8)));
                     length = (ushort)(7 + byteCount);
                 }
+
                 if (FunctionCode == 16)
                     length = (ushort)(7 + RegisterDataInt.Length * 2);
                 if (FunctionCode == 23)

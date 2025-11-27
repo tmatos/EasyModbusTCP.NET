@@ -6,36 +6,39 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+
 namespace EasyModbusAdvancedClient
 {
-	partial class MainForm
-	{
-		/// <summary>
-		/// Designer variable used to keep track of non-visual components.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
-		
-		/// <summary>
-		/// Disposes resources used by the form.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing) {
-				if (components != null) {
-					components.Dispose();
-				}
-			}
-			base.Dispose(disposing);
-		}
-		
-		/// <summary>
-		/// This method is required for Windows Forms designer support.
-		/// Do not change the method contents inside the source code editor. The Forms designer might
-		/// not be able to load this method if it was changed manually.
-		/// </summary>
-		private void InitializeComponent()
-		{
+    partial class MainForm
+    {
+        /// <summary>
+        /// Designer variable used to keep track of non-visual components.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+        
+        /// <summary>
+        /// Disposes resources used by the form.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
+        
+        /// <summary>
+        /// This method is required for Windows Forms designer support.
+        /// Do not change the method contents inside the source code editor. The Forms designer might
+        /// not be able to load this method if it was changed manually.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -442,14 +445,14 @@ namespace EasyModbusAdvancedClient
             // Column4
             // 
             this.Column4.HeaderText = "Datatype";
-            this.Column4.Items.AddRange(new object[] {
-            "BOOL (FALSE...TRUE)",
-            "INT16 (-32768...32767)",
-            "UINT16 (0...65535)",
-            "BOOL (FALSE...TRUE)",
-            "INT16 (-32768...32767)",
-            "WORD16 (0...65535)",
-            "ASCII"});
+            this.Column4.Items.AddRange( new object[] {
+                "BOOL (FALSE...TRUE)",
+                "INT16 (-32768...32767)",
+                "UINT16 (0...65535)",
+                "BOOL (FALSE...TRUE)",
+                "INT16 (-32768...32767)",
+                "WORD16 (0...65535)",
+                "ASCII"} );
             this.Column4.Name = "Column4";
             this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -676,69 +679,65 @@ namespace EasyModbusAdvancedClient
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
 
-		}
-		
-		
-				private System.Windows.Forms.ToolStripMenuItem deleteConnectionToolStripMenuItem;
-			private System.Windows.Forms.ToolStripMenuItem editConnectionToolStripMenuItem;
-			private System.Windows.Forms.ToolStripMenuItem deleteFunctionCodeToolStripMenuItem;
-			private System.Windows.Forms.ToolStripMenuItem editFunctionCodeToolStripMenuItem;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.DataGridView dataGridView1;
-		private System.Windows.Forms.ToolStripMenuItem updateAllValuesToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem updateValuesToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem startAllJobsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem startSingleJobToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem addFunctionCodeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem addConnectionToolStripMenuItem;
-		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-		private System.Windows.Forms.TreeView treeView1;
-		private System.Windows.Forms.SplitContainer splitContainer1;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-		private System.Windows.Forms.Button button3;
-		private System.Windows.Forms.Button button6;
-		private System.Windows.Forms.Button button5;
-		private System.Windows.Forms.Button button4;
-		private System.Windows.Forms.Button button10;
-		private System.Windows.Forms.Button button9;
-		private System.Windows.Forms.Button button8;
-		private System.Windows.Forms.Button button7;
-		private System.Windows.Forms.ToolStripMenuItem stopCurrentJobToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem stopAllJobsToolStripMenuItem;
-		private System.Windows.Forms.MenuStrip menuStrip1;
-		private System.Windows.Forms.ToolStripMenuItem workspaceToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem saveWorkspaceToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem changeWorkspaceToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem connectionManagerToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem addConnectionToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem deleteConnectionToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem editConnectionToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem addFunctionCodeToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem deleteFunctionCodeToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem editFunctionCodeToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-		private System.Windows.Forms.ToolStripMenuItem startAllJobsToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem stopAllJobsToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-		private System.Windows.Forms.ToolStripMenuItem updateAllValuessingleReadToolStripMenuItem;
-	
-	
-		
-		void ContextMenuStrip1Opening(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			
-		}
-		
-		void AddConnectionToolStripMenuItemClick(object sender, System.EventArgs e)
-		{
-			AddConnectionForm addConnectionForm = new AddConnectionForm(easyModbusManager);
-			addConnectionForm.ShowDialog();
-		}
+        private System.Windows.Forms.ToolStripMenuItem deleteConnectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editConnectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteFunctionCodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editFunctionCodeToolStripMenuItem;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ToolStripMenuItem updateAllValuesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updateValuesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startAllJobsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startSingleJobToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addFunctionCodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addConnectionToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.ToolStripMenuItem stopCurrentJobToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopAllJobsToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem workspaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveWorkspaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeWorkspaceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem connectionManagerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addConnectionToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem deleteConnectionToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem editConnectionToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem addFunctionCodeToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem deleteFunctionCodeToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem editFunctionCodeToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem startAllJobsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem stopAllJobsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripMenuItem updateAllValuessingleReadToolStripMenuItem;
+        
+        void ContextMenuStrip1Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            
+        }
+        
+        void AddConnectionToolStripMenuItemClick(object sender, System.EventArgs e)
+        {
+            AddConnectionForm addConnectionForm = new AddConnectionForm(easyModbusManager);
+            addConnectionForm.ShowDialog();
+        }
 
         private System.Windows.Forms.DataGridViewComboBoxColumn Column5;
         private System.Windows.Forms.DataGridViewComboBoxColumn Column1;
@@ -752,5 +751,3 @@ namespace EasyModbusAdvancedClient
         private System.Windows.Forms.TextBox textBox1;
     }
 }
-	
-

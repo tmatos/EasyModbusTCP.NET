@@ -104,14 +104,8 @@ namespace EasyModbus
         /// </summary>
         public string Filename
         {
-            get
-            {
-                return filename;
-            }
-            set
-            {
-                filename = value;
-            }
+            get { return filename; }
+            set {_filename = value; }
         }
     }
 }

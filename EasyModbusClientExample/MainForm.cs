@@ -21,6 +21,7 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -29,34 +30,34 @@ using System.Windows.Forms;
 
 namespace EasyModbusClientExample
 {
-	/// <summary>
-	/// Description of MainForm.
-	/// </summary>
-	public partial class MainForm : Form
-	{
-		private EasyModbus.ModbusClient modbusClient;
+    /// <summary>
+    /// Description of MainForm.
+    /// </summary>
+    public partial class MainForm : Form
+    {
+        private EasyModbus.ModbusClient modbusClient;
 
-		public MainForm()
-		{
-			//
-			// The InitializeComponent() call is required for Windows Forms designer support.
-			//
-			InitializeComponent();
+        public MainForm()
+        {
+            //
+            // The InitializeComponent() call is required for Windows Forms designer support.
+            //
+            InitializeComponent();
             
-			modbusClient = new EasyModbus.ModbusClient();
+            modbusClient = new EasyModbus.ModbusClient();
             modbusClient.ReceiveDataChanged += new EasyModbus.ModbusClient.ReceiveDataChangedHandler(UpdateReceiveData);
             modbusClient.SendDataChanged += new EasyModbus.ModbusClient.SendDataChangedHandler(UpdateSendData);
             modbusClient.ConnectedChanged += new EasyModbus.ModbusClient.ConnectedChangedHandler(UpdateConnectedChanged);
-            //          modbusClient.LogFileFilename = "logFiletxt.txt";
+            // modbusClient.LogFileFilename = "logFiletxt.txt";
 
             //modbusClient.Baudrate = 9600;
             //modbusClient.UnitIdentifier = 2;
         }
 
         string receiveData = null;
-		
-		void UpdateReceiveData(object sender)
-		{
+        
+        void UpdateReceiveData(object sender)
+        {
             receiveData = "Rx: " + BitConverter.ToString(modbusClient.receiveData).Replace("-", " ") + System.Environment.NewLine;
             Thread thread = new Thread(updateReceiveTextBox);
             thread.Start();
@@ -79,11 +80,10 @@ namespace EasyModbusClientExample
         string sendData = null;
 
         void UpdateSendData(object sender)
-		{
+        {
             sendData = "Tx: " + BitConverter.ToString(modbusClient.sendData).Replace("-", " ") + System.Environment.NewLine;
             Thread thread = new Thread(updateSendTextBox);
             thread.Start();
-
         }
 
         void updateSendTextBox()
@@ -98,16 +98,16 @@ namespace EasyModbusClientExample
                 textBox1.AppendText(sendData);
             }
         }
-		
-		void BtnConnectClick(object sender, EventArgs e)
-		{
-			modbusClient.IPAddress = txtIpAddressInput.Text;
-			modbusClient.Port = int.Parse(txtPortInput.Text);
-			modbusClient.Connect();
-		}
+        
+        void BtnConnectClick(object sender, EventArgs e)
+        {
+            modbusClient.IPAddress = txtIpAddressInput.Text;
+            modbusClient.Port = int.Parse(txtPortInput.Text);
+            modbusClient.Connect();
+        }
 
-		void BtnReadCoilsClick(object sender, EventArgs e)
-		{
+        void BtnReadCoilsClick(object sender, EventArgs e)
+        {
             try
             {
                 if (!modbusClient.Connected)
@@ -164,9 +164,10 @@ namespace EasyModbusClientExample
                 int[] serverResponse = modbusClient.ReadHoldingRegisters(int.Parse(txtStartingAddressInput.Text)-1, int.Parse(txtNumberOfValuesInput.Text));
 
                 lsbAnswerFromServer.Items.Clear();
+
                 for (int i = 0; i < serverResponse.Length; i++)
                 {
-                	lsbAnswerFromServer.Items.Add(serverResponse[i]);
+                    lsbAnswerFromServer.Items.Add(serverResponse[i]);
                 }
             }
             catch (Exception exc)
@@ -187,9 +188,10 @@ namespace EasyModbusClientExample
                 int[] serverResponse = modbusClient.ReadInputRegisters(int.Parse(txtStartingAddressInput.Text)-1, int.Parse(txtNumberOfValuesInput.Text));
   
                 lsbAnswerFromServer.Items.Clear();
+
                 for (int i = 0; i < serverResponse.Length; i++)
                 {
-                	lsbAnswerFromServer.Items.Add(serverResponse[i]);
+                    lsbAnswerFromServer.Items.Add(serverResponse[i]);
                 }
             }
             catch (Exception exc)
@@ -200,7 +202,7 @@ namespace EasyModbusClientExample
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.EasyModbusTCP.net"); 
+            System.Diagnostics.Process.Start("http://www.EasyModbusTCP.net");
         }
 
         private void cbbSelctionModbus_SelectedIndexChanged(object sender, EventArgs e)
@@ -256,20 +258,19 @@ namespace EasyModbusClientExample
                 modbusClient.Disconnect();
 
             modbusClient.SerialPort = cbbSelectComPort.SelectedItem.ToString();
-
             modbusClient.UnitIdentifier = byte.Parse(txtSlaveAddressInput.Text);
         }
-		
-		void TxtSlaveAddressInputTextChanged(object sender, EventArgs e)
-		{
+        
+        void TxtSlaveAddressInputTextChanged(object sender, EventArgs e)
+        {
             try
             {
                 modbusClient.UnitIdentifier = byte.Parse(txtSlaveAddressInput.Text);
             }
             catch (FormatException)
             {
-            }	
-		}
+            }    
+        }
 
         bool listBoxPrepareCoils = false;
         private void btnPrepareCoils_Click(object sender, EventArgs e)
@@ -284,6 +285,7 @@ namespace EasyModbusClientExample
         }
 
         bool listBoxPrepareRegisters = false;
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (!listBoxPrepareRegisters)
@@ -305,9 +307,7 @@ namespace EasyModbusClientExample
                 }
 
                 bool coilsToSend = false;
-
-                coilsToSend = bool.Parse(lsbWriteToServer.Items[0].ToString());
-    
+                coilsToSend = bool.Parse(lsbWriteToServer.Items[0].ToString());  
                 modbusClient.WriteSingleCoil(int.Parse(txtStartingAddressOutput.Text) - 1, coilsToSend);
             }
             catch (Exception exc)
@@ -326,9 +326,7 @@ namespace EasyModbusClientExample
                 }
 
                 int registerToSend = 0;
-
                 registerToSend = int.Parse(lsbWriteToServer.Items[0].ToString());
-
                 modbusClient.WriteSingleRegister(int.Parse(txtStartingAddressOutput.Text) - 1, registerToSend);
             }
             catch (Exception exc)
@@ -350,7 +348,6 @@ namespace EasyModbusClientExample
 
                 for (int i = 0; i < lsbWriteToServer.Items.Count; i++)
                 {
-
                     coilsToSend[i] = bool.Parse(lsbWriteToServer.Items[i].ToString());
                 }
 
@@ -375,7 +372,6 @@ namespace EasyModbusClientExample
 
                 for (int i = 0; i < lsbWriteToServer.Items.Count; i++)
                 {
-
                     registersToSend[i] = int.Parse(lsbWriteToServer.Items[i].ToString());
                 }
 
@@ -443,7 +439,6 @@ namespace EasyModbusClientExample
                     //modbusClient.receiveDataChanged += new EasyModbus.ModbusClient.ReceiveDataChanged(UpdateReceiveData);
                     //modbusClient.sendDataChanged += new EasyModbus.ModbusClient.SendDataChanged(UpdateSendData);
                     //modbusClient.connectedChanged += new EasyModbus.ModbusClient.ConnectedChanged(UpdateConnectedChanged);
-
                     modbusClient.Connect();
                 }
 
@@ -503,6 +498,5 @@ namespace EasyModbusClientExample
 
             modbusClient.Baudrate = int.Parse(txtBaudrate.Text);
         }
-
     }
 }
