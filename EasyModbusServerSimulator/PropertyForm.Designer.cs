@@ -82,7 +82,6 @@
             this.Name = "PropertyForm";
             this.Text = "Properties";
             this.ResumeLayout(false);
-
         }
 
         #endregion

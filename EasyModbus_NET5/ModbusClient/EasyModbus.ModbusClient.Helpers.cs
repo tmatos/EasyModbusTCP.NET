@@ -8,7 +8,6 @@ namespace EasyModbus
 {
     public partial class ModbusClient
     {
-
         public enum RegisterOrder { LowHigh = 0, HighLow = 1 };
 
         /// <summary>
@@ -60,11 +59,13 @@ namespace EasyModbus
             0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42, 0x43, 0x83, 0x41, 0x81, 0x80,
             0x40
             };
+
             UInt16 usDataLen = numberOfBytes;
             byte uchCRCHi = 0xFF;
             byte uchCRCLo = 0xFF;
             int i = 0;
             int uIndex;
+
             while (usDataLen > 0)
             {
                 usDataLen--;
@@ -76,6 +77,7 @@ namespace EasyModbus
                 }
                 i++;
             }
+
             return (UInt16)((UInt16)uchCRCHi << 8 | uchCRCLo);
         }
 
@@ -88,6 +90,7 @@ namespace EasyModbus
         {
             if (registers.Length != 2)
                 throw new ArgumentException("Input Array length invalid - Array langth must be '2'");
+
             int highRegister = registers[1];
             int lowRegister = registers[0];
             byte[] highRegisterBytes = BitConverter.GetBytes(highRegister);
@@ -100,7 +103,6 @@ namespace EasyModbus
                                 };
             return BitConverter.ToSingle(floatBytes, 0);
         }
-       
 
         /// <summary>
         /// Converts two ModbusRegisters to Float, Registers can by swapped
@@ -111,8 +113,10 @@ namespace EasyModbus
         public static float ConvertRegistersToFloat(int[] registers, RegisterOrder registerOrder)
         {
             int[] swappedRegisters = { registers[0], registers[1] };
+
             if (registerOrder == RegisterOrder.HighLow)
                 swappedRegisters = new int[] { registers[1], registers[0] };
+
             return ConvertRegistersToFloat(swappedRegisters);
         }
 
@@ -125,6 +129,7 @@ namespace EasyModbus
         {
             if (registers.Length != 2)
                 throw new ArgumentException("Input Array length invalid - Array langth must be '2'");
+
             int highRegister = registers[1];
             int lowRegister = registers[0];
             byte[] highRegisterBytes = BitConverter.GetBytes(highRegister);
@@ -135,6 +140,7 @@ namespace EasyModbus
                                     highRegisterBytes[0],
                                     highRegisterBytes[1]
                                 };
+
             return BitConverter.ToInt32(doubleBytes, 0);
         }
 
@@ -147,8 +153,10 @@ namespace EasyModbus
         public static Int32 ConvertRegistersToInt(int[] registers, RegisterOrder registerOrder)
         {
             int[] swappedRegisters = { registers[0], registers[1] };
+
             if (registerOrder == RegisterOrder.HighLow)
                 swappedRegisters = new int[] { registers[1], registers[0] };
+
             return ConvertRegistersToInt(swappedRegisters);
         }
 
@@ -162,6 +170,7 @@ namespace EasyModbus
         {
             if (registers.Length != 4)
                 throw new ArgumentException("Input Array length invalid - Array langth must be '4'");
+
             int highRegister = registers[3];
             int highLowRegister = registers[2];
             int lowHighRegister = registers[1];
@@ -180,6 +189,7 @@ namespace EasyModbus
                                     highRegisterBytes[0],
                                     highRegisterBytes[1]
                                 };
+
             return BitConverter.ToInt64(longBytes, 0);
         }
 
@@ -193,9 +203,12 @@ namespace EasyModbus
         {
             if (registers.Length != 4)
                 throw new ArgumentException("Input Array length invalid - Array langth must be '4'");
+
             int[] swappedRegisters = { registers[0], registers[1], registers[2], registers[3] };
+
             if (registerOrder == RegisterOrder.HighLow)
                 swappedRegisters = new int[] { registers[3], registers[2], registers[1], registers[0] };
+
             return ConvertRegistersToLong(swappedRegisters);
         }
 
@@ -208,6 +221,7 @@ namespace EasyModbus
         {
             if (registers.Length != 4)
                 throw new ArgumentException("Input Array length invalid - Array langth must be '4'");
+
             int highRegister = registers[3];
             int highLowRegister = registers[2];
             int lowHighRegister = registers[1];
@@ -226,6 +240,7 @@ namespace EasyModbus
                                     highRegisterBytes[0],
                                     highRegisterBytes[1]
                                 };
+
             return BitConverter.ToDouble(longBytes, 0);
         }
 
@@ -239,14 +254,17 @@ namespace EasyModbus
         {
             if (registers.Length != 4)
                 throw new ArgumentException("Input Array length invalid - Array langth must be '4'");
+
             int[] swappedRegisters = { registers[0], registers[1], registers[2], registers[3] };
             if (registerOrder == RegisterOrder.HighLow)
                 swappedRegisters = new int[] { registers[3], registers[2], registers[1], registers[0] };
+
             return ConvertRegistersToDouble(swappedRegisters);
         }
 
         /// <summary>
-        /// Converts float to two ModbusRegisters - Example:  modbusClient.WriteMultipleRegisters(24, EasyModbus.ModbusClient.ConvertFloatToTwoRegisters((float)1.22));
+        /// Converts float to two ModbusRegisters
+        /// Example: modbusClient.WriteMultipleRegisters(24, EasyModbus.ModbusClient.ConvertFloatToTwoRegisters((float)1.22));
         /// </summary>
         /// <param name="floatValue">Float value which has to be converted into two registers</param>
         /// <returns>Register values</returns>
@@ -273,6 +291,7 @@ namespace EasyModbus
                 BitConverter.ToInt32(lowRegisterBytes,0),
                 BitConverter.ToInt32(highRegisterBytes,0)
             };
+
             return returnValue;
         }
 
@@ -286,8 +305,10 @@ namespace EasyModbus
         {
             int[] registerValues = ConvertFloatToRegisters(floatValue);
             int[] returnValue = registerValues;
+
             if (registerOrder == RegisterOrder.HighLow)
                 returnValue = new Int32[] { registerValues[1], registerValues[0] };
+
             return returnValue;
         }
 
@@ -319,6 +340,7 @@ namespace EasyModbus
                 BitConverter.ToInt32(lowRegisterBytes,0),
                 BitConverter.ToInt32(highRegisterBytes,0)
             };
+
             return returnValue;
         }
 
@@ -332,8 +354,10 @@ namespace EasyModbus
         {
             int[] registerValues = ConvertIntToRegisters(intValue);
             int[] returnValue = registerValues;
+
             if (registerOrder == RegisterOrder.HighLow)
                 returnValue = new Int32[] { registerValues[1], registerValues[0] };
+
             return returnValue;
         }
 
@@ -381,6 +405,7 @@ namespace EasyModbus
                 BitConverter.ToInt32(highLowRegisterBytes,0),
                 BitConverter.ToInt32(highRegisterBytes,0)
             };
+
             return returnValue;
         }
 
@@ -394,8 +419,10 @@ namespace EasyModbus
         {
             int[] registerValues = ConvertLongToRegisters(longValue);
             int[] returnValue = registerValues;
+
             if (registerOrder == RegisterOrder.HighLow)
                 returnValue = new int[] { registerValues[3], registerValues[2], registerValues[1], registerValues[0] };
+
             return returnValue;
         }
 
@@ -443,6 +470,7 @@ namespace EasyModbus
                 BitConverter.ToInt32(highLowRegisterBytes,0),
                 BitConverter.ToInt32(highRegisterBytes,0)
             };
+
             return returnValue;
         }
 
@@ -456,8 +484,10 @@ namespace EasyModbus
         {
             int[] registerValues = ConvertDoubleToRegisters(doubleValue);
             int[] returnValue = registerValues;
+
             if (registerOrder == RegisterOrder.HighLow)
                 returnValue = new int[] { registerValues[3], registerValues[2], registerValues[1], registerValues[0] };
+
             return returnValue;
         }
 
@@ -479,6 +509,7 @@ namespace EasyModbus
                 result[i * 2] = registerResult[0];
                 result[i * 2 + 1] = registerResult[1];
             }
+
             return System.Text.Encoding.Default.GetString(result);
         }
 
@@ -491,6 +522,7 @@ namespace EasyModbus
         {
             byte[] array = System.Text.Encoding.ASCII.GetBytes(stringToConvert);
             int[] returnarray = new int[stringToConvert.Length / 2 + stringToConvert.Length % 2];
+
             for (int i = 0; i < returnarray.Length; i++)
             {
                 returnarray[i] = array[i * 2];
@@ -499,10 +531,8 @@ namespace EasyModbus
                     returnarray[i] = returnarray[i] | ((int)array[i * 2 + 1] << 8);
                 }
             }
+
             return returnarray;
         }
-
-
-
     }
 }

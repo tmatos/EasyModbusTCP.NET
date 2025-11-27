@@ -8,7 +8,6 @@ using System.Windows.Forms;
 
 namespace EasyModbusServerSimulator
 {
-    
     public partial class PropertyForm : Form
     {
         public delegate void settingsChangedEvent();
@@ -16,6 +15,7 @@ namespace EasyModbusServerSimulator
 
         Settings settings = new Settings();
         Settings settingsFromMainForm = new Settings();
+
         public PropertyForm(Settings settings)
         {
             this.settingsFromMainForm.Port = settings.Port;
@@ -36,7 +36,6 @@ namespace EasyModbusServerSimulator
 
         private void btnAccept_Click(object sender, EventArgs e)
         {
-           
             if (SettingsChangedEvent != null)
                 SettingsChangedEvent();
             this.Close();

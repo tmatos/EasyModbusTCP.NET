@@ -33,7 +33,6 @@ namespace EasyModbusServerSimulator
             
             easyModbusTCPServer.Listen();
 
-            
             easyModbusTCPServer.CoilsChanged += new ModbusServer.CoilsChangedHandler(CoilsChanged);
             easyModbusTCPServer.HoldingRegistersChanged += new ModbusServer.HoldingRegistersChangedHandler(HoldingRegistersChanged);
             easyModbusTCPServer.NumberOfConnectedClientsChanged += new ModbusServer.NumberOfConnectedClientsChangedHandler(NumberOfConnectionsChanged);
@@ -84,7 +83,6 @@ namespace EasyModbusServerSimulator
                 for (int i = startingAddressHoldingRegisters; i < 20 + startingAddressHoldingRegisters; i++)
                     dataGridView4.Rows.Add(i, easyModbusTCPServer.holdingRegisters[i]);
             }
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -102,6 +100,7 @@ namespace EasyModbusServerSimulator
                 startingAddressInputRegisters = (UInt16)numericUpDown1.Value;
             if (tabControl1.SelectedIndex == 3)
                 startingAddressHoldingRegisters = (UInt16)numericUpDown1.Value;
+            
             tabControl1_SelectedIndexChanged(null, null);
 
         }
@@ -114,7 +113,6 @@ namespace EasyModbusServerSimulator
             else
                 easyModbusTCPServer.discreteInputs[rowindex + startingAddressDiscreteInputs] = false;
             tabControl1_SelectedIndexChanged(null, null);
-
         }
 
         delegate void coilsChangedCallback(int coil, int numberOfCoil);
@@ -122,9 +120,9 @@ namespace EasyModbusServerSimulator
         {
             if (preventInvokeCoils)
                 return;
+
             if (this.tabControl1.InvokeRequired)
             {
-
                 {
                     coilsChangedCallback d = new coilsChangedCallback(CoilsChanged);
                     this.Invoke(d, coil, numberOfCoil);
@@ -138,58 +136,62 @@ namespace EasyModbusServerSimulator
         }
 
         delegate void registersChangedCallback(int register, int numberOfRegisters);
+
         bool registersChanegesLocked;
+
         private void HoldingRegistersChanged(int register, int numberOfRegisters)
         {
             if (preventInvokeHoldingRegisters)
                 return;
 
-                try
+            try
+            {
+                if (this.tabControl1.InvokeRequired)
                 {
-                    if (this.tabControl1.InvokeRequired)
+                    if (!registersChanegesLocked)
                     {
+                        lock (this)
                         {
-                            if (!registersChanegesLocked)
-                                lock (this)
-                                {
-                                    registersChanegesLocked = true;
+                            registersChanegesLocked = true;
 
-                                    registersChangedCallback d = new registersChangedCallback(HoldingRegistersChanged);
-                                    this.Invoke(d, register, numberOfRegisters);
-                                }
+                            registersChangedCallback d = new registersChangedCallback(HoldingRegistersChanged);
+                            this.Invoke(d, register, numberOfRegisters);
                         }
                     }
-                    else
-                    {
-                        if (tabControl1.SelectedIndex == 3)
-                            tabControl1_SelectedIndexChanged(null, null);
-                    }
                 }
-                catch (Exception) { }
-                registersChanegesLocked = false;
+                else
+                {
+                    if (tabControl1.SelectedIndex == 3)
+                        tabControl1_SelectedIndexChanged(null, null);
+                }
             }
-        
+            catch (Exception) { }
+
+            registersChanegesLocked = false;
+        }
 
         bool LockNumberOfConnectionsChanged=false;
+
         delegate void numberOfConnectionsCallback();
+
         private void NumberOfConnectionsChanged()
         {
             if (this.label3.InvokeRequired & !LockNumberOfConnectionsChanged)
             {
+                lock (this)
                 {
-                    lock (this)
+                    LockNumberOfConnectionsChanged = true;
+                    numberOfConnectionsCallback d = new numberOfConnectionsCallback(NumberOfConnectionsChanged);
+                    try
                     {
-                        LockNumberOfConnectionsChanged = true;
-                        numberOfConnectionsCallback d = new numberOfConnectionsCallback(NumberOfConnectionsChanged);
-                        try
-                        {
-                            this.Invoke(d);
-                        }
-                        catch (Exception) { }
-                        finally
-                        {
-                            LockNumberOfConnectionsChanged = false;
-                        }
+                        this.Invoke(d);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    finally
+                    {
+                        LockNumberOfConnectionsChanged = false;
                     }
                 }
             }
@@ -200,19 +202,21 @@ namespace EasyModbusServerSimulator
                     label3.Text = easyModbusTCPServer.NumberOfConnections.ToString();
                 }
                 catch (Exception)
-                { }
+                {
+                }
             }
         }
 
         private void dataGridView2_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowindex = dataGridView2.SelectedCells[0].RowIndex;
+
             if (easyModbusTCPServer.coils[rowindex + startingAddressCoils] == false)
                 easyModbusTCPServer.coils[rowindex + startingAddressCoils] = true;
             else
                 easyModbusTCPServer.coils[rowindex + startingAddressCoils] = false;
+
             tabControl1_SelectedIndexChanged(null, null);
-          
         }
 
         private void dataGridView3_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -220,11 +224,15 @@ namespace EasyModbusServerSimulator
             if (dataGridView3.SelectedCells.Count > 0)
             {
                 int rowindex = dataGridView3.SelectedCells[0].RowIndex;
+
                 try
                 {
                     easyModbusTCPServer.inputRegisters[rowindex + startingAddressInputRegisters] = Int16.Parse(dataGridView3.SelectedCells[0].Value.ToString());
                 }
-                catch (Exception) { }
+                catch (Exception)
+                {
+                }
+
                 tabControl1_SelectedIndexChanged(null, null);
             }
         }
@@ -245,13 +253,13 @@ namespace EasyModbusServerSimulator
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.EasyModbusTCP.net");    
+            System.Diagnostics.Process.Start("http://www.EasyModbusTCP.net");
         }
 
         private void vScrollBar1_ValueChanged(object sender, EventArgs e)
         {
-           startingAddressDiscreteInputs=(ushort)vScrollBar1.Value;
-           tabControl1_SelectedIndexChanged(null, null);
+            startingAddressDiscreteInputs=(ushort)vScrollBar1.Value;
+            tabControl1_SelectedIndexChanged(null, null);
         }
 
         private void vScrollBar2_ValueChanged(object sender, EventArgs e)
@@ -276,10 +284,8 @@ namespace EasyModbusServerSimulator
         bool locked;
         private void LogDataChanged()
         {
-
             if (showProtocolInformations == true)
             {
-
                 if (this.listBox1.InvokeRequired)
                 {
                     if (!locked)
@@ -295,23 +301,21 @@ namespace EasyModbusServerSimulator
                             catch (Exception)
                             {
                             }
-                           
-
                         }
-
                     }
                 }
                 else
                 {
-
                     try
                     {
                         listBox1.Items.Clear();
                         string listBoxData;
+
                         for (int i = 0; i < easyModbusTCPServer.ModbusLogData.Length; i++)
                         {
                             if (easyModbusTCPServer.ModbusLogData[i] == null)
                                 break;
+
                             if (easyModbusTCPServer.ModbusLogData[i].request)
                             {
                                 listBoxData = easyModbusTCPServer.ModbusLogData[i].timeStamp.ToString("H:mm:ss.ff") + " Request from Client - Functioncode: " + easyModbusTCPServer.ModbusLogData[i].functionCode.ToString();
@@ -371,6 +375,7 @@ namespace EasyModbusServerSimulator
 
                                 listBox1.Items.Add(listBoxData);
                             }
+
                             if (easyModbusTCPServer.ModbusLogData[i].response)
                             {
                                 if (easyModbusTCPServer.ModbusLogData[i].exceptionCode > 0)
@@ -379,8 +384,6 @@ namespace EasyModbusServerSimulator
                                     listBoxData = listBoxData + (" Response To Client - Error code: " + Convert.ToString(easyModbusTCPServer.ModbusLogData[i].errorCode, 16));
                                     listBoxData = listBoxData + " Exception Code: " + easyModbusTCPServer.ModbusLogData[i].exceptionCode.ToString();
                                     listBox1.Items.Add(listBoxData);
-
-
                                 }
                                 else
                                 {
@@ -436,10 +439,7 @@ namespace EasyModbusServerSimulator
                     catch (Exception) { }
 
                     locked = false;
-
-
-                }
-                
+                }   
             }
         }
 
@@ -451,11 +451,8 @@ namespace EasyModbusServerSimulator
                 showProtocolInformations = false;
         }
 
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        
         {
-
             easyModbusTCPServer.StopListening();
             Environment.Exit(0);
         }
@@ -555,6 +552,7 @@ namespace EasyModbusServerSimulator
             easyModbusTCPServer.Port = settings.Port;
             easyModbusTCPServer.SerialPort = settings.ComPort;
             easyModbusTCPServer.UnitIdentifier = settings.SlaveAddress;
+
             if (settings.ModbusTypeSelection == Settings.ModbusType.ModbusUDP)
             {
                 easyModbusTCPServer.UDPFlag = true;
@@ -573,10 +571,11 @@ namespace EasyModbusServerSimulator
                 easyModbusTCPServer.SerialFlag = true;
                 label4.Text = "...Modbus-RTU Client Listening (Com-Port: " + settings.ComPort + ")...";
             }
+
             easyModbusTCPServer.PortChanged = true;
-            
             easyModbusTCPServer.Listen();
         }
+
 		void EasyModbusTCPServerBindingSourceCurrentChanged(object sender, EventArgs e)
 		{
 	
@@ -584,15 +583,13 @@ namespace EasyModbusServerSimulator
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.EasyModbusTCP.net"); 
+            System.Diagnostics.Process.Start("http://www.EasyModbusTCP.net");
         }
 
         private void checkBox10_CheckedChanged(object sender, EventArgs e)
         {
             easyModbusTCPServer.FunctionCode23Disabled = !checkBox10.Checked;
         }
-
-
 
         private void panel1_MouseLeave(object sender, EventArgs e)
         {
@@ -615,8 +612,6 @@ namespace EasyModbusServerSimulator
                 showProtocolInformations = false;
         }
 
-
-
         private void MainForm_MouseMove(object sender, MouseEventArgs e)
         {
             if (checkBox1.Checked)
@@ -627,17 +622,16 @@ namespace EasyModbusServerSimulator
 
         private int xLastLocation;
         private int yLastLocation;
+
         private void listBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            
-
-
             if ((Math.Abs(e.Location.X - xLastLocation) < 50) & (Math.Abs(e.Location.Y - yLastLocation) < 50))
                 return;
+
             xLastLocation = e.Location.X;
             yLastLocation = e.Location.Y;
 
-                showProtocolInformations = false;
+            showProtocolInformations = false;
             string strToolTip = "";
 
             //Get the item
@@ -646,7 +640,6 @@ namespace EasyModbusServerSimulator
                 strToolTip = listBox1.Items[nIdx].ToString();
 
             toolTip1.SetToolTip(listBox1, strToolTip);
-             
         }
 
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)

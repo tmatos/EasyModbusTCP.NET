@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace EasyModbus
 {
-
-
-
     /// <summary>
     /// Protocol Data Unit (PDU) - As Specified in the Modbus Appliction Protocol specification V1.1b3 Page 3
     /// The PDU consists of:
@@ -31,17 +28,15 @@ namespace EasyModbus
 
         public bool[] RegisterDataBool { get; set; }
 
-
-
         public byte[] Data
         {
             //return the data in case of a request
             get
             {
                 Byte[] returnvalue = null;
+
                 switch (FunctionCode)
                 {
-
                     // FC01 (0x01) "Read Coils" Page 11
                     case 1:
                         returnvalue = new byte[]
@@ -49,8 +44,7 @@ namespace EasyModbus
                             BitConverter.GetBytes((ushort)StartingAddressRead)[1],
                             BitConverter.GetBytes((ushort)StartingAddressRead)[0],
                             BitConverter.GetBytes((ushort)QuantityRead)[1],
-                            BitConverter.GetBytes((ushort)QuantityRead)[0],
-                            
+                            BitConverter.GetBytes((ushort)QuantityRead)[0],   
                            };
                         break;
                     // FC02 (0x02) "Read Discrete Inputs" Page 12
@@ -61,12 +55,12 @@ namespace EasyModbus
                             BitConverter.GetBytes((ushort)StartingAddressRead)[0],
                             BitConverter.GetBytes((ushort)QuantityRead)[1],
                             BitConverter.GetBytes((ushort)QuantityRead)[0],
-
                            };
                         break;
                 }
                 return returnvalue;
             }
+
             //set the data in case of a response
             set
             {
@@ -83,13 +77,9 @@ namespace EasyModbus
                             RegisterDataBool[i] = (Convert.ToBoolean((intData & mask) / mask));
                         }
                         break;
-
                 }
             }
-
-
         }
-
     }
 
     /// <summary>
@@ -107,8 +97,7 @@ namespace EasyModbus
     /// The "Data" section is described in the Documentation of the Function code and will be created according to the given Function code
     /// </summary>
     class ApplicationDataUnit : ProtocolDataUnit
-    {
-        
+    {   
         public ushort TransactionIdentifier { get; set; }
         private ushort protocolIdentifier = 0;
         
@@ -127,6 +116,7 @@ namespace EasyModbus
             get
             {
                 ushort length = 0x0006;
+
                 if (FunctionCode == 15)
                 {
                     byte byteCount = (byte)((RegisterDataBool.Length % 8 != 0 ? RegisterDataBool.Length / 8 + 1 : (RegisterDataBool.Length / 8)));
@@ -152,9 +142,8 @@ namespace EasyModbus
             }
         }
 
-
-
-       public byte[] Payload {
+       public byte[] Payload
+       {
             // Return the Payload in case of a request
             get
             {
@@ -166,24 +155,16 @@ namespace EasyModbus
 
                 byte [] crc = BitConverter.GetBytes(ModbusClient.calculateCRC(returnvalue.ToArray(), (ushort)(returnvalue.Count - 8), 6));
                 returnvalue.AddRange(crc);
+
                 return returnvalue.ToArray();
             }
+            
             // Set the Payload in case of a resonse
             set 
             {
-                
                 TransactionIdentifier = BitConverter.ToUInt16(value, 0);
                 UnitIdentifier = value[6];
-
             }
-
-
         }
-
-
     }
-
-
-
-
-    }
+}

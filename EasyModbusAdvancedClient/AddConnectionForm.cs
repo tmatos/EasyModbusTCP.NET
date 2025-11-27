@@ -139,7 +139,6 @@ namespace EasyModbusAdvancedClient
         	set { modbusTCPAddress = value; }
     	}
     	
-    	
 		int port = 502;   
    		[Browsable(true)]                       
    		[Category("Connection properties")] 
@@ -172,7 +171,6 @@ namespace EasyModbusAdvancedClient
         	get { return slaveID; }
         	set { slaveID = value; }
     	}
-    	  	    
         
 		bool cyclicFlag = false;
 		[Browsable(true)]                       

@@ -36,7 +36,6 @@ namespace EasyModbusAdvancedClient
 		EasyModbusManager easyModbusManager = new EasyModbusManager();
 		public MainForm()
 		{
-			
 			//
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
@@ -85,7 +84,6 @@ namespace EasyModbusAdvancedClient
     		toolTip6.ReshowDelay=500;
     		toolTip6.ShowAlways=true;
     		toolTip6.SetToolTip(this.button8, "Edit Function code");
-    		
     		    		
     		ToolTip toolTip7 = new ToolTip();
    			toolTip7.AutoPopDelay=5000;
@@ -101,7 +99,6 @@ namespace EasyModbusAdvancedClient
     		toolTip8.ShowAlways=true;
     		toolTip8.SetToolTip(this.button10, "Start all jobs (continuous reading)");
 		}
-		
 
         private void UpdateListBox(object sender)
         {
@@ -124,7 +121,6 @@ namespace EasyModbusAdvancedClient
             }
             treeView1.ExpandAll();
             this.UpdateDataGridViewItems();
-            
         }
         
         private void UpdateDataGridView(object sender)
@@ -178,8 +174,6 @@ namespace EasyModbusAdvancedClient
 					}
         	}
         }
-        
-
 
 		void TreeView1AfterSelect(object sender, TreeViewEventArgs e)
 		{			
@@ -408,9 +402,6 @@ namespace EasyModbusAdvancedClient
 			{
 				dataGridView1[0, i].Value = connectionNames[i] ;
 			}
-            
- 
-            
             
             
            // 			DataGridViewComboBoxCell cbCell = (DataGridViewComboBoxCell)dataGridView1.Rows[0].Cells[3];

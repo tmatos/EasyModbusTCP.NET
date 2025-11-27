@@ -870,7 +870,7 @@ namespace EasyModbus
                 if (sendData.exceptionCode > 0)
                     data = new byte[9 + 2*Convert.ToInt32(serialFlag)];
                 else
-                       data = new byte[9 + sendData.byteCount+ 2*Convert.ToInt32(serialFlag)];
+                    data = new byte[9 + sendData.byteCount+ 2*Convert.ToInt32(serialFlag)];
               
                 Byte[] byteData = new byte[2];
 
@@ -907,22 +907,30 @@ namespace EasyModbus
                 }
 
                 if (sendData.sendCoilValues != null)
+                {
                     for (int i = 0; i < (sendData.byteCount); i++)
                     {
                         byteData = new byte[2];
+
                         for (int j = 0; j < 8; j++)
                         {
                             byte boolValue;
+
                             if (sendData.sendCoilValues[i * 8 + j] == true)
                                 boolValue = 1;
                             else
                                 boolValue = 0;
+
                             byteData[1] = (byte)((byteData[1]) | (boolValue << j));
+
                             if ((i * 8 + j + 1) >= sendData.sendCoilValues.Length)
                                 break;
                         }
+
                         data[9 + i] = byteData[1];
                     }
+                }
+
                 try
                 {
                     if (serialFlag)
@@ -973,6 +981,7 @@ namespace EasyModbus
 
             sendData.unitIdentifier = this.unitIdentifier;
             sendData.functionCode = receiveData.functionCode;
+
             if ((receiveData.quantity < 1) | (receiveData.quantity > 0x07D0))  //Invalid quantity
             {
                 sendData.errorCode = (byte)(receiveData.functionCode + 0x80);
@@ -996,10 +1005,12 @@ namespace EasyModbus
             if (true)
             {
                 Byte[] data;
+
                 if (sendData.exceptionCode > 0)
                     data = new byte[9 + 2 * Convert.ToInt32(serialFlag)];
                 else
                     data = new byte[9 + sendData.byteCount + 2 * Convert.ToInt32(serialFlag)];
+                
                 Byte[] byteData = new byte[2];
                 sendData.length = (byte)(data.Length - 6);
 
@@ -1035,6 +1046,7 @@ namespace EasyModbus
                 }
 
                 if (sendData.sendCoilValues != null)
+                {
                     for (int i = 0; i < (sendData.byteCount); i++)
                     {
                         byteData = new byte[2];
@@ -1045,12 +1057,15 @@ namespace EasyModbus
                                 boolValue = 1;
                             else
                                 boolValue = 0;
+
                             byteData[1] = (byte)((byteData[1]) | (boolValue << j));
+
                             if ((i * 8 + j + 1) >= sendData.sendCoilValues.Length)
                                 break;
                         }
                         data[9 + i] = byteData[1];
                     }
+                }
 
                 try
                 {
@@ -1058,17 +1073,19 @@ namespace EasyModbus
                     {
                         if (!serialport.IsOpen)
                             throw new EasyModbus.Exceptions.SerialPortNotOpenedException("serial port not opened");
+
                         //Create CRC
                         sendData.crc = ModbusClient.calculateCRC(data, Convert.ToUInt16(data.Length - 8), 6);
                         byteData = BitConverter.GetBytes((int)sendData.crc);
                         data[data.Length - 2] = byteData[0];
                         data[data.Length - 1] = byteData[1];
                         serialport.Write(data, 6, data.Length - 6);
+                        
                         if (debug)
                         {
                             byte[] debugData = new byte[data.Length - 6];
                             Array.Copy(data, 6, debugData, 0, data.Length - 6);
-                            if (debug) StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
+                            StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
                         }
                     }
                     else if (udpFlag)
@@ -1076,7 +1093,6 @@ namespace EasyModbus
                         //UdpClient udpClient = new UdpClient();
                         IPEndPoint endPoint = new IPEndPoint(ipAddressIn, portIn);
                         udpClient.Send(data, data.Length, endPoint);
-
                     }
                     else
                     {
@@ -1124,10 +1140,12 @@ namespace EasyModbus
             if (true)
             {
                 Byte[] data;
+
                 if (sendData.exceptionCode > 0)
                     data = new byte[9 + 2 * Convert.ToInt32(serialFlag)];
                 else
                     data = new byte[9 + sendData.byteCount + 2 * Convert.ToInt32(serialFlag)];
+
                 Byte[] byteData = new byte[2];
                 sendData.length = (byte)(data.Length - 6);
 
@@ -1163,29 +1181,34 @@ namespace EasyModbus
                 }
 
                 if (sendData.sendRegisterValues != null)
+                {
                     for (int i = 0; i < (sendData.byteCount / 2); i++)
                     {
                         byteData = BitConverter.GetBytes((Int16)sendData.sendRegisterValues[i]);
                         data[9 + i * 2] = byteData[1];
                         data[10 + i * 2] = byteData[0];
                     }
+                }
+                
                 try
                 {
                     if (serialFlag)
                     {
                         if (!serialport.IsOpen)
                             throw new EasyModbus.Exceptions.SerialPortNotOpenedException("serial port not opened");
+
                         //Create CRC
                         sendData.crc = ModbusClient.calculateCRC(data, Convert.ToUInt16(data.Length - 8), 6);
                         byteData = BitConverter.GetBytes((int)sendData.crc);
                         data[data.Length - 2] = byteData[0];
                         data[data.Length - 1] = byteData[1];
                         serialport.Write(data, 6, data.Length - 6);
+
                         if (debug)
                         {
                             byte[] debugData = new byte[data.Length - 6];
                             Array.Copy(data, 6, debugData, 0, data.Length - 6);
-                            if (debug) StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
+                            StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
                         }
                     }
                     else if (udpFlag)
@@ -1193,7 +1216,6 @@ namespace EasyModbus
                         //UdpClient udpClient = new UdpClient();
                         IPEndPoint endPoint = new IPEndPoint(ipAddressIn, portIn);
                         udpClient.Send(data, data.Length, endPoint);
-
                     }
                     else
                     {
@@ -1420,20 +1442,19 @@ namespace EasyModbus
                         data[data.Length - 2] = byteData[0];
                         data[data.Length - 1] = byteData[1];
                         serialport.Write(data, 6, data.Length - 6);
+
                         if (debug)
                         {
                             byte[] debugData = new byte[data.Length - 6];
                             Array.Copy(data, 6, debugData, 0, data.Length - 6);
-                            if (debug) StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
+                            StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
                         }
-
                     }
                     else if (udpFlag)
                     {
                         //UdpClient udpClient = new UdpClient();
                         IPEndPoint endPoint = new IPEndPoint(ipAddressIn, portIn);
                         udpClient.Send(data, data.Length, endPoint);
-
                     }
                     else
                     {
@@ -1486,6 +1507,7 @@ namespace EasyModbus
             if (true)
             {
                 Byte[] data;
+
                 if (sendData.exceptionCode > 0)
                     data = new byte[9 + 2 * Convert.ToInt32(serialFlag)];
                 else
@@ -1537,19 +1559,20 @@ namespace EasyModbus
                     {
                         if (!serialport.IsOpen)
                             throw new EasyModbus.Exceptions.SerialPortNotOpenedException("serial port not opened");
+
                         //Create CRC
                         sendData.crc = ModbusClient.calculateCRC(data, Convert.ToUInt16(data.Length - 8), 6);
                         byteData = BitConverter.GetBytes((int)sendData.crc);
                         data[data.Length - 2] = byteData[0];
                         data[data.Length - 1] = byteData[1];
                         serialport.Write(data, 6, data.Length - 6);
+
                         if (debug)
                         {
                             byte[] debugData = new byte[data.Length - 6];
                             Array.Copy(data, 6, debugData, 0, data.Length - 6);
-                            if (debug) StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
+                            StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
                         }
-
                     }
                     else if (udpFlag)
                     {
@@ -1565,6 +1588,7 @@ namespace EasyModbus
                     }
                 }
                 catch (Exception) { }
+
                 if (HoldingRegistersChanged != null)
                     HoldingRegistersChanged(receiveData.startingAdress+1, 1);
             }
@@ -1608,10 +1632,8 @@ namespace EasyModbus
                         int mask = 0x1;
                         mask = mask << (shift);
                         if ((receiveData.receiveCoilValues[i / 16] & (ushort)mask) == 0)
-                        
                             coils[receiveData.startingAdress + i + 1] = false;
                         else
-                        
                             coils[receiveData.startingAdress + i + 1] = true;
                     }
             }
@@ -1681,20 +1703,19 @@ namespace EasyModbus
                         data[data.Length - 2] = byteData[0];
                         data[data.Length - 1] = byteData[1];
                         serialport.Write(data, 6, data.Length - 6);
+
                         if (debug)
                         {
                             byte[] debugData = new byte[data.Length - 6];
                             Array.Copy(data, 6, debugData, 0, data.Length - 6);
-                            if (debug) StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
+                            StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
                         }
-
                     }
                     else if (udpFlag)
                     {
                         //UdpClient udpClient = new UdpClient();
                         IPEndPoint endPoint = new IPEndPoint(ipAddressIn, portIn);
                         udpClient.Send(data, data.Length, endPoint);
-
                     }
                     else
                     {
@@ -1703,6 +1724,7 @@ namespace EasyModbus
                     }
                 }
                 catch (Exception) { }
+
                 if (CoilsChanged != null)
                     CoilsChanged(receiveData.startingAdress+1, receiveData.quantity);
             }
@@ -1808,8 +1830,7 @@ namespace EasyModbus
                         {
                             byte[] debugData = new byte[data.Length - 6];
                             Array.Copy(data, 6, debugData, 0, data.Length - 6);
-                            if (debug)
-                                StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
+                            StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
                         }
                     }
                     else if (udpFlag)
@@ -1817,7 +1838,6 @@ namespace EasyModbus
                         //UdpClient udpClient = new UdpClient();
                         IPEndPoint endPoint = new IPEndPoint(ipAddressIn, portIn);
                         udpClient.Send(data, data.Length, endPoint);
-
                     }
                     else
                     {
@@ -1825,7 +1845,7 @@ namespace EasyModbus
                         if (debug)
                             StoreLogData.Instance.Store("Send Data: " + BitConverter.ToString(data), System.DateTime.Now);
                     }
-                    }
+                }
                 catch (Exception)
                 {
                 }
@@ -1844,7 +1864,6 @@ namespace EasyModbus
 
             sendData.unitIdentifier = this.unitIdentifier;
             sendData.functionCode = receiveData.functionCode;
-
 
             if ((receiveData.quantityRead < 0x0001) | (receiveData.quantityRead > 0x007D) | (receiveData.quantityWrite < 0x0001) | (receiveData.quantityWrite > 0x0079) | (receiveData.byteCount != (receiveData.quantityWrite * 2)))  //Invalid Quantity
             {
@@ -2029,7 +2048,7 @@ namespace EasyModbus
                         {
                             byte[] debugData = new byte[data.Length - 6];
                             Array.Copy(data, 6, debugData, 0, data.Length - 6);
-                            if (debug) StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
+                            StoreLogData.Instance.Store("Send Serial-Data: " + BitConverter.ToString(debugData), System.DateTime.Now);
                         }
                     }
                     else if (udpFlag)
@@ -2057,7 +2076,6 @@ namespace EasyModbus
             }
             modbusLogData[0] = receiveData;
             modbusLogData[1] = sendData;
-
         }
 
         public int NumberOfConnections
