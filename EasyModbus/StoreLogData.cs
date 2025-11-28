@@ -105,7 +105,7 @@ namespace EasyModbus
         public string Filename
         {
             get { return filename; }
-            set {_filename = value; }
+            set { filename = value; }
         }
     }
 }
